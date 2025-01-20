@@ -7,6 +7,7 @@
     <title>Luna front end testing toolkit</title>
   </head>
   <body>
+    <!-- main connection -->
     <div class="root-socket-connection">
       <input
         type="text"
@@ -15,6 +16,11 @@
       />
       <button onclick="onConnectButtonClicked()">connect</button>
     </div>
+    <!-- Inputs -->
+    <div class="root-inputs">
+      <input type="range" min="0" max="200" />
+    </div>
+    <!-- event history log -->
     <div class="root-event-logs">
       <h2>Event Logs</h2>
       <div id="eventLogs"></div>
