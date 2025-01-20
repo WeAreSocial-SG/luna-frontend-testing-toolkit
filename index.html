@@ -1,37 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Luna Event Viewer</title>
-        <link rel="stylesheet" href="./style.css" />
-    </head>
-    <body>
-        <div class="section-one">
-            <h2>Luna Event Viewer</h2>
-            <div>
-                <div>socket server url:</div>
-                <input
-                    type="text"
-                    placeholder="http://localhost:8080"
-                    id="urlInput"
-                />
-            </div>
-            <button id="connect">Connect</button>
-            <hr />
-            <input id="eventField" type="text" placeholder="event" />
-            <input id="payloadField" type="text" placeholder="payload" />
-            <button id="sendButton">Send Event</button>
-            <button id="clearEvents">Clear</button>
-            <hr />
-            <textarea name="" id="filters" cols="30" rows="10">
-playDialogue,lunaResponse,lunaStateChanged,visionTrigger,qrCodeScanned,productShow,telegramTrigger,restart,updateTranscription</textarea
-            >
-            <button id="filterButton">Filter</button>
-        </div>
-        <div class="section-two" id="feed"></div>
-        <script src="./commonScripts/sockets.js"></script>
-        <script src="./mockEngine_main.js"></script>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luna front end testing toolkit</title>
+  </head>
+  <body>
+    <div class="root-socket-connection">
+      <input
+        type="text"
+        placeholder="ws://localhost:8000"
+        id="socketUrlInput"
+      />
+      <button onclick="onConnectButtonClicked()">connect</button>
+    </div>
+    <div class="root-event-logs">
+      <h2>Event Logs</h2>
+      <div id="eventLogs"></div>
+    </div>
+    <!-- scripts -->
+    <script src="./src/states.js"></script>
+    <script src="./src/sockets.js"></script>
+    <script src="./main.js"></script>
+  </body>
 </html>

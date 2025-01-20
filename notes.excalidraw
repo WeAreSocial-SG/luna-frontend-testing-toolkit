@@ -1,0 +1,48 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "ELcw71oPyln2XiwpTvapB",
+      "type": "text",
+      "x": 340.407193966263,
+      "y": 437.2695725092252,
+      "width": 301.6997375488281,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1081977444,
+      "version": 99,
+      "versionNonce": 1605863132,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1737363292138,
+      "link": null,
+      "locked": false,
+      "text": "TODO for luna testing toolkit\n\n>>> connect to websockets",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "baseline": 68,
+      "containerId": null,
+      "originalText": "TODO for luna testing toolkit\n\n>>> connect to websockets",
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
