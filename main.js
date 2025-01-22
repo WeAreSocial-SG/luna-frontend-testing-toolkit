@@ -6,42 +6,62 @@ const COLORS = {
 
 // setup the qr code scanner
 const resultContainer = document.getElementById("qr-reader-results");
-let lastResult,
-    countResults = 0;
+let lastScanTime = 0;
+const scanCooldown = 3;
 function onScanSuccess(decodedText, decodedResult) {
-    if (decodedText !== lastResult) {
-        ++countResults;
-        lastResult = decodedText;
+    const durationSinceLastScan = Math.abs(lastScanTime - Date.now()) / 1000;
+    if (durationSinceLastScan > scanCooldown) {
         // Handle on success condition with the decoded message.
         console.log(`Scan result ${decodedText}`, decodedResult);
+        //make the fetch to server
+        const url = document.getElementById("baseUrlInput").value;
+        fetch(`http://${url}:8000/?qr-scanner=${decodedText}`);
+        lastScanTime = Date.now();
     }
 }
 const html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-    fps: 3,
+    fps: 10,
     qrbox: 250,
 });
 html5QrcodeScanner.render(onScanSuccess);
 
 // create main update loop
 function mainLoop() {
-    // render events history
     renderEventHistory();
+    renderStatus();
 }
 setInterval(mainLoop, 1000 * 0.3);
 
 // rendering
+function renderStatus() {
+    (async () => {
+        const url = document.getElementById("baseUrlInput").value;
+        const res = await fetch(`http://${url}/`);
+        const resJson = await res.json();
+        console.log(resJson);
+        // todo render the states
+        document.getElementById("modeLabel").innerHTML = resJson.MODE;
+        document.getElementById("stateLabel").innerHTML = resJson.STATE;
+    })();
+}
 function renderEventHistory() {
     const elEventLogs = document.getElementById("events");
     elEventLogs.innerHTML = "";
     States.eventLogs.forEach((event) => {
-        const payloadIsString =
-            typeof event.payload === "string" ||
-            event.payload instanceof String;
-        console.log();
-        const payload = payloadIsString
-            ? event.payload
-            : JSON.stringify(event.payload, null, "\t");
-        elEventLogs.innerHTML += `
+        // filter the events
+        const eventFilters = document
+            .getElementById("eventFilter")
+            .value.split(",");
+        if (eventFilters.includes(event.event)) {
+            // check if string or json
+            const payloadIsString =
+                typeof event.payload === "string" ||
+                event.payload instanceof String;
+            const payload = payloadIsString
+                ? event.payload
+                : JSON.stringify(event.payload, null, "\t");
+            // render the evetns
+            elEventLogs.innerHTML += `
         <div class="event-log">
             <div class="name-label">
                 <div class="event-key">Event: </div>
@@ -53,6 +73,7 @@ function renderEventHistory() {
             </div>
         </div> 
     `;
+        }
     });
 }
 
