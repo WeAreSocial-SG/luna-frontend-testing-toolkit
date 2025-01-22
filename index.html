@@ -1,33 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Luna front end testing toolkit</title>
-  </head>
-  <body>
-    <!-- main connection -->
-    <div class="root-socket-connection">
-      <input
-        type="text"
-        placeholder="ws://localhost:8000"
-        id="socketUrlInput"
-      />
-      <button onclick="onConnectButtonClicked()">connect</button>
-    </div>
-    <!-- Inputs -->
-    <div class="root-inputs">
-      <input type="range" min="0" max="200" />
-    </div>
-    <!-- event history log -->
-    <div class="root-event-logs">
-      <h2>Event Logs</h2>
-      <div id="eventLogs"></div>
-    </div>
-    <!-- scripts -->
-    <script src="./src/states.js"></script>
-    <script src="./src/sockets.js"></script>
-    <script src="./main.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Luna front end testing toolkit</title>
+    </head>
+    <body>
+        <div class="column-1">
+            <!-- main connection -->
+            <div
+                class="card card-shadow root-client-connection"
+                style="background-color: #ff958a"
+            >
+                <h3 class="card-title">Server Connection Status</h3>
+                <div class="row">
+                    <input
+                        type="text"
+                        placeholder="Base Server Url"
+                        value="localhost:8000"
+                        id="baseUrlInput"
+                    />
+                    <button onclick="onConnectButtonClicked()">connect</button>
+                </div>
+                <div id="clientConnectionStatusLabel">Not Connected</div>
+            </div>
+            <!-- Inputs -->
+            <div class="card card-shadow root-proximity-input">
+                <h3 class="card-title">Proximity Input</h3>
+                <div class="row">
+                    <p id="proximityLabel">10</p>
+                    <input
+                        type="range"
+                        min="0"
+                        max="200"
+                        value="10"
+                        id="proximitySlider"
+                    />
+                </div>
+                <div class="row">
+                    <input type="checkbox" id="proximityCheckbox" />
+                    <p>Start Sending</p>
+                </div>
+            </div>
+            <!-- qr scanner input -->
+            <div class="card card-shadow root-qr-scanner">
+                <h3 class="card-title">QR Scanner</h3>
+                <div id="qr-reader"></div>
+                <div id="qr-reader-results"></div>
+            </div>
+            <!-- event sender -->
+            <div class="root-event-sender card card-shadow">
+                <div class="row">
+                    <h3 class="card-title">Event Sender</h3>
+                </div>
+                🚧 under construction
+            </div>
+        </div>
+        <div class="column-2">
+            <div class="card card-shadow root-status-tracker">
+                <div class="row">
+                    <h3 class="card-title">Status Tracker</h3>
+                </div>
+                <div class="two-panel">
+                    <div class="status-badges-stack">
+                        <div class="status-badge">
+                            <h5>Luna Mode:</h5>
+                            <div id="modeLabel">Active</div>
+                        </div>
+                        <div class="status-badge">
+                            <h5>Luna State:</h5>
+                            <div id="stateLabel">Idle</div>
+                        </div>
+                    </div>
+                    <div class="faded-bg" id="statusList">he</div>
+                </div>
+            </div>
+            <div class="card card-shadow root-event-log">
+                <div class="row">
+                    <h3 class="card-title">Event Log</h3>
+                </div>
+                <div class="row">
+                    <input
+                        type="text"
+                        id="eventFilter"
+                        value="playDialogue,lunaFinishedSpeaking,lunaResponded,updateLunaState,triggerVision,qrCodeScanned,showProduct,triggerTelegram,restart,updateTranscriptio,playRecordedAudio,timer,showNotificationAlert,showTooltip,updateLunaMode,updateCurrentSessionId,userReturnedFromPause,register,syncEnvironment"
+                    />
+                    <button>Filter</button>
+                </div>
+                <div id="events"></div>
+            </div>
+        </div>
+        <!-- external scripts -->
+        <script src="https://unpkg.com/html5-qrcode"></script>
+        <!-- scripts -->
+        <script src="./src/states.js"></script>
+        <script src="./src/sockets.js"></script>
+        <script src="./main.js"></script>
+    </body>
 </html>
