@@ -17,6 +17,8 @@ function onScanSuccess(decodedText, decodedResult) {
         const url = document.getElementById("baseUrlInput").value;
         fetch(`http://${url}:8000/?qr-scanner=${decodedText}`);
         lastScanTime = Date.now();
+        //trigger ui aniamiton
+        triggerConfirmationAnimation("#scannerConfirmation");
     }
 }
 const html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
@@ -39,9 +41,20 @@ function renderStatus() {
         const res = await fetch(`http://${url}/`);
         const resJson = await res.json();
         console.log(resJson);
-        // todo render the states
+        //  render the important stats
         document.getElementById("modeLabel").innerHTML = resJson.MODE;
         document.getElementById("stateLabel").innerHTML = resJson.STATE;
+        // render other stats
+        const statusList = document.getElementById("statusList");
+        statusList.innerHTML = "";
+        const keys = Object.keys(resJson);
+        keys.forEach((key) => {
+            statusList.innerHTML += `
+            <div>
+                <strong>${key}</strong>: ${resJson[key]}
+            </div>
+            `;
+        });
     })();
 }
 function renderEventHistory() {
@@ -124,6 +137,12 @@ function isJson(str) {
         return false;
     }
     return true;
+}
+function triggerConfirmationAnimation(elementSelector) {
+    console.log("triggering");
+    const element = document.querySelector(elementSelector);
+    element.classList.remove(".confirmation-animation");
+    element.classList.add(".confirmation-animation");
 }
 
 /*

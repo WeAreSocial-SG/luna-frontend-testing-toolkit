@@ -80,6 +80,19 @@ input {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
 }
+@keyframes fade {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+.confirmation-animation {
+    opacity: 0;
+    animation-name: fade;
+    animation-duration: 0.3s;
+}
 
 /* client connection status */
 .root-client-connection {
@@ -125,6 +138,9 @@ input {
 .root-qr-scanner button {
     margin-top: 0.5rem;
 }
+.root-qr-scanner #scannerConfirmation {
+    color: green;
+}
 
 /* status tracker */
 .root-status-tracker {
@@ -138,6 +154,7 @@ input {
     display: grid;
     gap: 0.5rem;
     grid-template-columns: 1fr 1fr;
+    height: 12rem;
 }
 .root-status-tracker .faded-bg {
     background-color: rgba(98, 100, 121, 0.212);
@@ -150,6 +167,7 @@ input {
 #statusList {
     padding: 1rem;
     border-radius: 1rem;
+    overflow-y: scroll;
 }
 .status-badge {
     background-color: rgb(167, 208, 255);
