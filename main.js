@@ -15,7 +15,7 @@ function onScanSuccess(decodedText, decodedResult) {
         console.log(`Scan result ${decodedText}`, decodedResult);
         //make the fetch to server
         const url = document.getElementById("baseUrlInput").value;
-        fetch(`http://${url}/?qr-scanner=${decodedText}`);
+        fetch(`http://${url}/qr-scanner?payload=${decodedText}`);
         lastScanTime = Date.now();
         //trigger ui aniamiton
         triggerConfirmationAnimation("#scannerConfirmation");
@@ -59,7 +59,7 @@ function renderStatus() {
 function renderEventHistory() {
     const elEventLogs = document.getElementById("events");
     elEventLogs.innerHTML = "";
-    States.eventLogs.forEach((event) => {
+    [...States.eventLogs].reverse().forEach((event) => {
         // filter the events
         const eventFilters = document
             .getElementById("eventFilter")
@@ -102,6 +102,12 @@ function onConnectButtonClicked() {
             ".root-client-connection"
         ).style = `background-color: ${COLORS.positiveGreen}`;
     };
+    Sockets.onClose = () => {
+        connectoinLabel.innerHTML = "Not Connected";
+        document.querySelector(
+            ".root-client-connection"
+        ).style = `background-color: ${COLORS.errorRed}`;
+    };
     // start the websocket
     const url = `ws://${
         document.getElementById("baseUrlInput").value
@@ -124,21 +130,34 @@ setInterval(() => {
     const distance = document.getElementById("proximitySlider").value;
     // if checkbox
     if (document.getElementById("proximityCheckbox").checked) {
-        (async ()=>{
-            triggerConfirmationAnimation("#proximityConfirmation")
+        (async () => {
+            triggerConfirmationAnimation("#proximityConfirmation");
             await fetch(`http://${url}/proximity?distance=${distance}`);
         })();
-
     }
 }, 2 * 1000);
-function onSendEventButtonClicked(){
-    const eventName = document.getElementById("sendingEvent").value
-    const eventPayload = document.getElementById("sendingPayload").value
+function onSendEventButtonClicked() {
+    const eventName = document.getElementById("sendingEvent").value;
+    const eventPayload = document.getElementById("sendingPayload").value;
     const payload = JSON.stringify({
         event: eventName,
-        payload: eventPayload
-    })
-    sockets.send(payload)
+        payload: eventPayload,
+    });
+    sockets.send(payload);
+}
+// event log filters
+const filterPresets = {
+    All: "playDialogue,lunaFinishedSpeaking,lunaResponded,updateLunaState,triggerVision,qrCodeScanned,showProduct,triggerTelegram,restart,updateTranscription,playRecordedAudio,timer,showNotificationAlert,showTooltip,updateLunaMode,updateCurrentSessionId,userReturnedFromPause,register,syncEnvironment",
+    Conversation: "playDialogue,updateLunaTranscription",
+};
+const allFilterButtons = document.getElementsByClassName("event-filters");
+for (let index = 0; index < allFilterButtons.length; index++) {
+    const element = allFilterButtons[index];
+    element.addEventListener("click", () => {
+        console.log(element);
+        document.getElementById("eventFilter").value =
+            filterPresets[element.innerHTML];
+    });
 }
 
 // utility
@@ -153,15 +172,15 @@ function isJson(str) {
 function triggerConfirmationAnimation(elementSelector) {
     const element = document.querySelector(elementSelector);
     element.classList.remove("confirmation-animation");
-    element.offsetWidth // force re render
+    element.offsetWidth; // force re render
     element.classList.add("confirmation-animation");
 }
 
-window.addEventListener("keydown", (e)=>{
-    if(e.key ==="1"){
-        triggerConfirmationAnimation("#scannerConfirmation")
+window.addEventListener("keydown", (e) => {
+    if (e.key === "1") {
+        triggerConfirmationAnimation("#scannerConfirmation");
     }
-})
+});
 
 /*
 events csv

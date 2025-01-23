@@ -6,6 +6,9 @@ class Sockets {
     onOpen = () => {
         console.log("Web socket is successfully open");
     };
+    onClose = () => {
+        console.log("web socket is closed");
+    };
     constructor(wssUrl, connectionName) {
         // initialise connection
         this.socketConnection = new WebSocket(wssUrl);
@@ -28,9 +31,13 @@ class Sockets {
                 })
             );
             // log connections successfully established
-            console.log("websockets connection sucessfully establishes");
+            console.log("websockets connection sucessfully established");
             // constantly check for server connection
             //   setInterval(this.checkServer.bind(this), 1000);
+        };
+        this.socketConnection.onclose = () => {
+            // invoke the callback
+            Sockets.onClose();
         };
     }
     send(payload) {

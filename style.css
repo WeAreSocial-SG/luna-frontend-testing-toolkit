@@ -75,17 +75,17 @@ button {
     background-color: black;
     color: white;
 }
-button{
-  pointer-events: auto;
-  cursor: pointer;
-  transition: 0.3s;
-  transform: scale(1);
+button {
+    pointer-events: auto;
+    cursor: pointer;
+    transition: 0.3s;
+    transform: scale(1);
 }
-button:hover{
-	transform: scale(1.1)
+button:hover {
+    transform: scale(1.1);
 }
-button:active{
-	transform: scale(0.9)
+button:active {
+    transform: scale(0.9);
 }
 input {
     border: none;
@@ -155,22 +155,21 @@ input {
 }
 
 /* root event sender */
-.root-event-sender{
+.root-event-sender {
 }
-.root-event-sender .grid{
+.root-event-sender .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 0.5rem
+    gap: 0.5rem;
 }
-.root-event-sender input{
+.root-event-sender input {
     border: grey 1px solid;
 }
-.root-event-sender button{
+.root-event-sender button {
     margin-top: 0.5rem;
     width: 100%;
 }
-
 
 /* status tracker */
 .root-status-tracker {
@@ -218,9 +217,9 @@ input {
     border: 1px solid grey;
     margin-right: 0.5rem;
 }
-#events{
+#events {
     overflow-y: scroll;
-    height: 30rem
+    height: 30rem;
 }
 .root-event-log .event-log {
     margin-top: 0.5rem;
@@ -248,4 +247,8 @@ input {
     font-size: 0.75rem;
     opacity: 0.8;
     font-weight: 300;
+}
+.root-event-log .row {
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
 }
