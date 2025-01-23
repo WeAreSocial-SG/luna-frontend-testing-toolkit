@@ -15,7 +15,7 @@ function onScanSuccess(decodedText, decodedResult) {
         console.log(`Scan result ${decodedText}`, decodedResult);
         //make the fetch to server
         const url = document.getElementById("baseUrlInput").value;
-        fetch(`http://${url}:8000/?qr-scanner=${decodedText}`);
+        fetch(`http://${url}/?qr-scanner=${decodedText}`);
         lastScanTime = Date.now();
         //trigger ui aniamiton
         triggerConfirmationAnimation("#scannerConfirmation");
@@ -40,7 +40,6 @@ function renderStatus() {
         const url = document.getElementById("baseUrlInput").value;
         const res = await fetch(`http://${url}/`);
         const resJson = await res.json();
-        console.log(resJson);
         //  render the important stats
         document.getElementById("modeLabel").innerHTML = resJson.MODE;
         document.getElementById("stateLabel").innerHTML = resJson.STATE;
@@ -107,7 +106,7 @@ function onConnectButtonClicked() {
     const url = `ws://${
         document.getElementById("baseUrlInput").value
     }/websocket`;
-    const sockets = new Sockets(url, "engine");
+    sockets = new Sockets(url, "engine");
     // add maessage callback
     sockets.onMessageCallback = onEventReceived;
 }
@@ -125,9 +124,22 @@ setInterval(() => {
     const distance = document.getElementById("proximitySlider").value;
     // if checkbox
     if (document.getElementById("proximityCheckbox").checked) {
-        fetch(`http://${url}/proximity?distance=${distance}`);
+        (async ()=>{
+            triggerConfirmationAnimation("#proximityConfirmation")
+            await fetch(`http://${url}/proximity?distance=${distance}`);
+        })();
+
     }
 }, 2 * 1000);
+function onSendEventButtonClicked(){
+    const eventName = document.getElementById("sendingEvent").value
+    const eventPayload = document.getElementById("sendingPayload").value
+    const payload = JSON.stringify({
+        event: eventName,
+        payload: eventPayload
+    })
+    sockets.send(payload)
+}
 
 // utility
 function isJson(str) {
@@ -139,11 +151,17 @@ function isJson(str) {
     return true;
 }
 function triggerConfirmationAnimation(elementSelector) {
-    console.log("triggering");
     const element = document.querySelector(elementSelector);
-    element.classList.remove(".confirmation-animation");
-    element.classList.add(".confirmation-animation");
+    element.classList.remove("confirmation-animation");
+    element.offsetWidth // force re render
+    element.classList.add("confirmation-animation");
 }
+
+window.addEventListener("keydown", (e)=>{
+    if(e.key ==="1"){
+        triggerConfirmationAnimation("#scannerConfirmation")
+    }
+})
 
 /*
 events csv

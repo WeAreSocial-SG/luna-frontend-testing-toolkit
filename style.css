@@ -75,12 +75,24 @@ button {
     background-color: black;
     color: white;
 }
+button{
+  pointer-events: auto;
+  cursor: pointer;
+  transition: 0.3s;
+  transform: scale(1);
+}
+button:hover{
+	transform: scale(1.1)
+}
+button:active{
+	transform: scale(0.9)
+}
 input {
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
 }
-@keyframes fade {
+@keyframes fade-anim {
     from {
         opacity: 1;
     }
@@ -90,8 +102,8 @@ input {
 }
 .confirmation-animation {
     opacity: 0;
-    animation-name: fade;
-    animation-duration: 0.3s;
+    animation-name: fade-anim;
+    animation-duration: 1s;
 }
 
 /* client connection status */
@@ -142,6 +154,24 @@ input {
     color: green;
 }
 
+/* root event sender */
+.root-event-sender{
+}
+.root-event-sender .grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.5rem
+}
+.root-event-sender input{
+    border: grey 1px solid;
+}
+.root-event-sender button{
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+
 /* status tracker */
 .root-status-tracker {
     margin-top: 0;
@@ -188,7 +218,10 @@ input {
     border: 1px solid grey;
     margin-right: 0.5rem;
 }
-
+#events{
+    overflow-y: scroll;
+    height: 30rem
+}
 .root-event-log .event-log {
     margin-top: 0.5rem;
     width: 100%;

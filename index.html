@@ -42,6 +42,11 @@
                 <div class="row">
                     <input type="checkbox" id="proximityCheckbox" />
                     <p>Start Sending</p>
+                    <span
+                        class="confirmation-animation"
+                        id="proximityConfirmation"
+                        >Sent!</span
+                    >
                 </div>
             </div>
             <!-- qr scanner input -->
@@ -62,7 +67,13 @@
                 <div class="row">
                     <h3 class="card-title">Event Sender</h3>
                 </div>
-                🚧 under construction
+                <div class="grid">
+                    <p>event: </p>
+                    <input type="text" id="sendingEvent" placeholder="event name" value="lunaFinishedSpeaking">
+                    <p>payload: </p>
+                    <input type="text" id="sendingPayload" placeholder="event payload" value="">
+                </div>
+                <button onclick="onSendEventButtonClicked()">Send</button>
             </div>
         </div>
         <div class="column-2">
