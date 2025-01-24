@@ -18,7 +18,7 @@ function onScanSuccess(decodedText, decodedResult) {
         fetch(`http://${url}/qr-scanner?payload=${decodedText}`);
         lastScanTime = Date.now();
         //trigger ui aniamiton
-        triggerConfirmationAnimation("#scannerConfirmation");
+        triggerConfirmationAnimation(".root-qr-scanner");
     }
 }
 const html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
@@ -26,6 +26,9 @@ const html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
     qrbox: 250,
 });
 html5QrcodeScanner.render(onScanSuccess);
+
+// setup mock unity
+const mockUnity = new MockUnity(document.getElementById("mockUnityContainer"));
 
 // create main update loop
 function mainLoop() {
@@ -148,7 +151,7 @@ function onSendEventButtonClicked() {
 // event log filters
 const filterPresets = {
     All: "playDialogue,lunaFinishedSpeaking,lunaResponded,updateLunaState,triggerVision,qrCodeScanned,showProduct,triggerTelegram,restart,updateTranscription,playRecordedAudio,timer,showNotificationAlert,showTooltip,updateLunaMode,updateCurrentSessionId,userReturnedFromPause,register,syncEnvironment",
-    Conversation: "playDialogue,updateLunaTranscription",
+    Conversation: "playDialogue,updateTranscription",
 };
 const allFilterButtons = document.getElementsByClassName("event-filters");
 for (let index = 0; index < allFilterButtons.length; index++) {

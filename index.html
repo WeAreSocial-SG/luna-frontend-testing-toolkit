@@ -45,20 +45,14 @@
                     <span
                         class="confirmation-animation"
                         id="proximityConfirmation"
+                        style="color: white"
                         >Sent!</span
                     >
                 </div>
             </div>
             <!-- qr scanner input -->
             <div class="card card-shadow root-qr-scanner">
-                <h3 class="card-title">
-                    QR Scanner
-                    <span
-                        class="confirmation-animation"
-                        id="scannerConfirmation"
-                        >Sent!</span
-                    >
-                </h3>
+                <h3 class="card-title">QR Scanner</h3>
                 <div id="qr-reader"></div>
                 <div id="qr-reader-results"></div>
             </div>
@@ -102,7 +96,7 @@
                             <div id="stateLabel">Idle</div>
                         </div>
                     </div>
-                    <div class="faded-bg" id="statusList">he</div>
+                    <div class="faded-bg" id="statusList">Uninitialised</div>
                 </div>
             </div>
             <div class="card card-shadow root-event-log">
@@ -124,11 +118,20 @@
                 <div id="events"></div>
             </div>
         </div>
+        <div class="column-3">
+            <div class="card card-shadow root-mock-unity">
+                <div class="row">
+                    <h3 class="card-title">Mock Unity</h3>
+                </div>
+                <div id="mockUnityContainer"></div>
+            </div>
+        </div>
         <!-- external scripts -->
         <script src="https://unpkg.com/html5-qrcode"></script>
         <!-- scripts -->
         <script src="./src/states.js"></script>
         <script src="./src/sockets.js"></script>
+        <script src="./src/MockUnity.js"></script>
         <script src="./main.js"></script>
     </body>
 </html>
