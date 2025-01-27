@@ -193,34 +193,64 @@ window.addEventListener("keydown", (e) => {
             },
         });
     }
-    if (e.key === "2") {
+    if (e.key === "q") {
         MockUnity.instance.handleEvents({
             event: "qrCodeScanned",
             payload: "P023",
         });
     }
-    if (e.key === "@") {
+    if (e.key === "Q") {
         MockUnity.instance.handleEvents({
             event: "qrCodeScanned",
             payload: "lunapass",
         });
     }
-    if (e.key === "3") {
+    if (e.key === "n") {
         MockUnity.instance.handleEvents({
             event: "showNotificationAlert",
             payload: "This is a yellow alert",
         });
     }
-    if (e.key === "4") {
+    if (e.key === "m") {
         MockUnity.instance.handleEvents({
             event: "updateLunaMode",
             payload: "paused",
         });
     }
-    if (e.key === "$") {
+    if (e.key === "M") {
         MockUnity.instance.handleEvents({
             event: "updateLunaMode",
             payload: "onboarding",
+        });
+    }
+    if (e.key === "c") {
+        MockUnity.instance.handleEvents({
+            event: "lunaResponded",
+            payload: "Hi my name is Luna",
+        });
+    }
+    if (e.key === "C") {
+        MockUnity.instance.handleEvents({
+            event: "lunaResponded",
+            payload: "Can I take a picture of you",
+        });
+    }
+    if (e.key === "1") {
+        MockUnity.instance.handleEvents({
+            event: "updateLunaState",
+            payload: "idle",
+        });
+    }
+    if (e.key === "2") {
+        MockUnity.instance.handleEvents({
+            event: "updateLunaState",
+            payload: "thinking",
+        });
+    }
+    if (e.key === "3") {
+        MockUnity.instance.handleEvents({
+            event: "updateLunaState",
+            payload: "speaking",
         });
     }
 });

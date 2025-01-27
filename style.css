@@ -26,7 +26,8 @@ html {
 }
 
 body {
-    width: 100%;
+    /* width: 100%; */
+    width: fit-content;
     height: 100%;
     padding: 1rem;
     overflow-x: scroll;
@@ -48,7 +49,8 @@ body {
 }
 .column-2 {
     height: 100%;
-    width: var(--big-col-length);
+    /* width: var(--big-col-length); */
+    width: 43rem;
     display: grid;
     grid-template-rows: 15rem 1fr;
     /* background-color: rgba(255, 0, 0, 0.178); */
@@ -56,9 +58,8 @@ body {
     grid-template-rows: 1fr 1fr; */
 }
 .column-3 {
-    width: 40rem;
     height: 100%;
-    width: var(--big-col-length);
+    width: fit-content;
 }
 
 /* main styles */
@@ -241,7 +242,7 @@ input {
 #events {
     overflow-y: scroll;
     height: 30rem;
-    width: 100%;
+    width: 40rem;
 }
 .root-event-log .event-log {
     margin-top: 0.5rem;
@@ -316,11 +317,15 @@ input {
 .root-mock-unity {
     margin-top: 0;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
 }
 
 .root-mock-unity #mockUnityContainer {
-    width: 100%;
-    max-width: 100%;
+    /* width: 100%;
+    max-width: 100%; */
+    height: 100%;
     aspect-ratio: 9/16;
     background-color: grey;
     overflow: hidden;

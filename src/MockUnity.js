@@ -40,7 +40,15 @@ const htmlElements = `
         </div>
     </div>
 
-    <!-- notification alert -->
+    <!-- conversation bubbles -->
+    <div class="overlay">
+        <div class="bubble-container">
+            <div class="bubble" id="bubble2" style="opacity: 0">word 1</div> 
+            <div class="bubble" id="bubble1">word 2</div> 
+        </div>
+    </div>
+
+    <!-- paused overlay -->
     <div class="overlay unity-paused-overlay">
         <div class="unity-paused-card">
             <h1>Session's paused</h1>
@@ -53,17 +61,14 @@ const htmlElements = `
         </div>
     </div>
 
-    <!-- conversation bubbles -->
-    <div class="overlay">
-        <div class="bubble-container">
-            <div class="bubble" id="bubble2">word 1</div> 
-            <div class="bubble" id="bubble1">word 2</div> 
-        </div>
-    </div>
 `;
 
 class MockUnity {
     static instance = null;
+    // states
+    states = {
+        conversationHistory: ["", ""]
+    }
     constructor(parentElement, socket) {
         // handle singleton
         if (MockUnity.instance) {
@@ -92,6 +97,8 @@ class MockUnity {
                 "notificationContainer"
             ),
             pausedOvelay: document.querySelector(".unity-paused-overlay"),
+            bubble1: document.getElementById("bubble1"),
+            bubble2: document.getElementById("bubble2")
         };
     }
     handleEvents(event) {
@@ -152,6 +159,32 @@ class MockUnity {
                     ).innerHTML = "#" + this.elements.sessionLabel.innerHTML;
                 } else {
                     this.elements.pausedOvelay.style = "opacity:0";
+                }
+                break;
+            case "lunaResponded":
+                // update variable
+                if(this.states.conversationHistory[0] === ""){ // empty array
+                    this.states.conversationHistory[0] = event.payload
+                }else{ // push back element zero and insert new event
+                    this.states.conversationHistory[1] = this.states.conversationHistory[0]
+                    this.states.conversationHistory[0] = event.payload
+                }
+                // render elements
+                if(this.states.conversationHistory[0] !== ""){
+                    this.elements.bubble1.innerHTML = this.states.conversationHistory[0]
+                }
+                if(this.states.conversationHistory[1] !== ""){
+                    this.elements.bubble2.innerHTML = this.states.conversationHistory[1]
+                    this.elements.bubble2.style = ""
+                }else{
+                    this.elements.bubble2.style = "opacity: 0"
+                }
+                break;
+            case "updateLunaState":
+                if(event.payload === "thinking"){
+                    this.elements.bubble1.innerHTML = "• • •"
+                }else{
+                    this.elements.bubble1.innerHTML = this.states.conversationHistory[0]
                 }
                 break;
             default:
