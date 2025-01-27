@@ -28,10 +28,10 @@ html {
 body {
     width: 100%;
     height: 100%;
-    display: flex;
     padding: 1rem;
     overflow-x: scroll;
     overflow-y: scroll;
+    display: flex;
     gap: 1rem;
 }
 
@@ -40,23 +40,25 @@ body {
     max-width: 100%;
     height: 100%;
     width: var(--small-col-length);
-    /* display: flex;
-    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
     /* background-color: rgba(255, 0, 0, 0.178); */
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    /* display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr; */
 }
 .column-2 {
     height: 100%;
     width: var(--big-col-length);
-    /* background-color: rgba(255, 0, 0, 0.178); */
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 15rem 1fr;
+    /* background-color: rgba(255, 0, 0, 0.178); */
+    /* display: grid;
+    grid-template-rows: 1fr 1fr; */
 }
 .column-3 {
-    width: var(--big-col-length);
-    max-width: 100%;
+    width: 40rem;
     height: 100%;
+    width: var(--big-col-length);
 }
 
 /* main styles */
@@ -234,10 +236,12 @@ input {
     gap: 1rem;
     border: 1px solid grey;
     margin-right: 0.5rem;
+    width: 100%;
 }
 #events {
     overflow-y: scroll;
     height: 30rem;
+    width: 100%;
 }
 .root-event-log .event-log {
     margin-top: 0.5rem;
@@ -271,6 +275,43 @@ input {
     margin-bottom: 0.5rem;
 }
 
+/* mock canvas animations */
+@keyframes slide-right-animation {
+    0% {
+        right: -10rem;
+    }
+    5% {
+        right: 1rem;
+    }
+    75% {
+        right: 1rem;
+    }
+    100% {
+        right: -10rem;
+    }
+}
+.play-slide-right-animation {
+    animation-name: slide-right-animation;
+    animation-duration: 8s;
+}
+@keyframes slide-down-animation {
+    0% {
+        top: -10rem;
+    }
+    5% {
+        top: 1rem;
+    }
+    75% {
+        top: 1rem;
+    }
+    100% {
+        top: -10rem;
+    }
+}
+.play-slide-down-animation {
+    animation-name: slide-down-animation;
+    animation-duration: 8s;
+}
 /* the mock canvas */
 .root-mock-unity {
     margin-top: 0;
@@ -291,8 +332,131 @@ input {
 #mockUnityContainer .unity-session-id {
     font-size: 0.7rem;
     background-color: lightgrey;
-    width: 11em;
+    width: 11.5em;
     padding: 0.5em 1em;
     border-radius: 1.5em;
     margin: 1em;
+}
+/* tooltip stuff */
+#mockUnityContainer .unity-tooltip .unity-tooltip-container {
+    width: 10rem;
+    background-color: rgba(181, 181, 181, 0.525);
+    padding: 1rem;
+    border-radius: 1rem;
+    position: absolute;
+    /* right: 1rem; */
+    top: 60%;
+    right: -10rem;
+}
+#mockUnityContainer .unity-tooltip .unity-tooltip-container hr {
+    border-top: solid 2px black;
+    margin: 0.5rem 0rem;
+}
+.unity-tooltip-container h1 {
+    font-size: 0.8em;
+}
+.unity-tooltip-container p {
+    font-size: 0.6em;
+}
+/* tooltip stuff */
+#mockUnityContainer .unity-scanner-confirmation {
+    position: absolute;
+    /* right: 1rem; */
+    right: -10rem;
+    top: 70%;
+    background-color: black;
+    color: white;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    font-size: 0.8rem;
+}
+/* notification alert */
+#mockUnityContainer .unity-notification-alert-container {
+    padding: 1rem;
+    width: 100%;
+}
+#mockUnityContainer .unity-notification-alert {
+    position: absolute;
+    left: 2.5%;
+    /* right: -10rem; */
+    /* width: calc(100%-2rem); */
+    top: -10rem;
+    width: 95%;
+    text-align: center;
+    font-weight: 600;
+    background-color: rgb(255, 196, 0);
+    color: black;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    font-size: 0.8rem;
+    outline: black 3px solid;
+}
+/* paused overlay */
+.unity-paused-overlay {
+    background-color: rgba(0, 0, 0, 0.463);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    opacity: 0;
+}
+.unity-paused-overlay .unity-paused-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(238, 250, 255, 0.701);
+    width: 70%;
+    height: fit-content;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+.unity-paused-overlay hr {
+    border-top: 2px solid black;
+    width: 100%;
+    margin: 0.5rem;
+    margin-bottom: 1rem;
+}
+.unity-paused-overlay .unity-paused-card h1 {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.unity-paused-overlay .unity-paused-card p {
+    text-align: center;
+}
+
+.unity-paused-overlay .unity-paused-card .user-label {
+    text-align: center;
+    background-color: white;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 1rem;
+    font-weight: 700;
+}
+
+.unity-paused-overlay .unity-paused-card h2 {
+    color: red;
+    font-weight: 500;
+    margin: 1rem;
+}
+
+/* conversation bubbles */
+.bubble-container {
+    /* outline: red solid 3px; */
+    position: absolute;
+    right: 1rem;
+    top: 5rem;
+}
+.bubble-container .bubble {
+    background-color: rgba(38, 39, 43, 0.767);
+    color: white;
+    height: 5rem;
+    padding: 0.75rem;
+    width: 13rem;
+    border-radius: 1rem;
+    margin: 0.5rem;
+}
+#bubble2 {
+    width: 12rem;
+    background-color: rgba(38, 39, 43, 0.514);
 }

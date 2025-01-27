@@ -40,23 +40,25 @@ setInterval(mainLoop, 1000 * 0.3);
 // rendering
 function renderStatus() {
     (async () => {
-        const url = document.getElementById("baseUrlInput").value;
-        const res = await fetch(`http://${url}/`);
-        const resJson = await res.json();
-        //  render the important stats
-        document.getElementById("modeLabel").innerHTML = resJson.MODE;
-        document.getElementById("stateLabel").innerHTML = resJson.STATE;
-        // render other stats
-        const statusList = document.getElementById("statusList");
-        statusList.innerHTML = "";
-        const keys = Object.keys(resJson);
-        keys.forEach((key) => {
-            statusList.innerHTML += `
+        try {
+            const url = document.getElementById("baseUrlInput").value;
+            const res = await fetch(`http://${url}/`);
+            const resJson = await res.json();
+            //  render the important stats
+            document.getElementById("modeLabel").innerHTML = resJson.MODE;
+            document.getElementById("stateLabel").innerHTML = resJson.STATE;
+            // render other stats
+            const statusList = document.getElementById("statusList");
+            statusList.innerHTML = "";
+            const keys = Object.keys(resJson);
+            keys.forEach((key) => {
+                statusList.innerHTML += `
             <div>
                 <strong>${key}</strong>: ${resJson[key]}
             </div>
             `;
-        });
+            });
+        } catch (e) {}
     })();
 }
 function renderEventHistory() {
@@ -122,6 +124,7 @@ function onConnectButtonClicked() {
 function onEventReceived(data) {
     const dataParsed = JSON.parse(data);
     States.eventLogs.push(dataParsed);
+    MockUnity.instance.handleEvents(dataParsed);
 }
 // proximity slider stuff
 document.getElementById("proximitySlider").addEventListener("change", (e) => {
@@ -179,9 +182,46 @@ function triggerConfirmationAnimation(elementSelector) {
     element.classList.add("confirmation-animation");
 }
 
+// testing unity mock without server
 window.addEventListener("keydown", (e) => {
-    if (e.key === "1") {
-        triggerConfirmationAnimation("#scannerConfirmation");
+    if (e.key === "t") {
+        MockUnity.instance.handleEvents({
+            event: "showTooltip",
+            payload: {
+                title: "Tooltip title ",
+                body: "This is a body... lorem ipsum some random text yippiee",
+            },
+        });
+    }
+    if (e.key === "2") {
+        MockUnity.instance.handleEvents({
+            event: "qrCodeScanned",
+            payload: "P023",
+        });
+    }
+    if (e.key === "@") {
+        MockUnity.instance.handleEvents({
+            event: "qrCodeScanned",
+            payload: "lunapass",
+        });
+    }
+    if (e.key === "3") {
+        MockUnity.instance.handleEvents({
+            event: "showNotificationAlert",
+            payload: "This is a yellow alert",
+        });
+    }
+    if (e.key === "4") {
+        MockUnity.instance.handleEvents({
+            event: "updateLunaMode",
+            payload: "paused",
+        });
+    }
+    if (e.key === "$") {
+        MockUnity.instance.handleEvents({
+            event: "updateLunaMode",
+            payload: "onboarding",
+        });
     }
 });
 
