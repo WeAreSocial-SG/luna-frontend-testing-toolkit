@@ -74,7 +74,6 @@ class MockUnity {
         if (MockUnity.instance) {
             return MockUnity.instance;
         }
-        console.log("initialising mock unity");
         MockUnity.instance = this;
         // setup this variables
         this.parentElement = parentElement;
@@ -100,6 +99,8 @@ class MockUnity {
             bubble1: document.getElementById("bubble1"),
             bubble2: document.getElementById("bubble2")
         };
+        // timer ticker
+        setInterval(this.timerTick.bind(this), 1000)
     }
     handleEvents(event) {
         console.log("mock unity received event:", event);
@@ -193,5 +194,8 @@ class MockUnity {
                 );
                 break;
         }
+    }
+    timerTick(){
+
     }
 }

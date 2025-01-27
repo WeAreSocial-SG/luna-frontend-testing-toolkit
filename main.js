@@ -253,6 +253,12 @@ window.addEventListener("keydown", (e) => {
             payload: "speaking",
         });
     }
+    if (e.key === "v") {
+        MockUnity.instance.handleEvents({
+            event: "triggerVision",
+            payload: "",
+        });
+    }
 });
 
 /*
