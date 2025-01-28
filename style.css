@@ -23,12 +23,14 @@ html {
     overflow: auto;
     /* width: 100%; */
     background-color: #d5dcd2;
+    min-width: 100%;
 }
 
 body {
     /* width: 100%; */
     width: fit-content;
     height: 100%;
+    min-width: 100%;
     padding: 1rem;
     overflow-x: scroll;
     overflow-y: scroll;
@@ -232,6 +234,10 @@ input {
 .root-event-log {
     flex-grow: 1;
 }
+.root-event-log .event-filters {
+    color: black;
+    font-weight: 600;
+}
 .root-event-log input {
     flex-grow: 1;
     gap: 1rem;
@@ -253,14 +259,12 @@ input {
 }
 .root-event-log .event-log .name-label {
     width: 12rem;
-    background-color: #a7d0ff;
     border-radius: 0.5rem 0 0 0.5rem;
     padding: 0.25rem 0.5rem;
     font-weight: 600;
 }
 .root-event-log .event-log .payload-label {
     width: calc(100% - 12rem);
-    background-color: #a7d0ff7c;
     padding: 0.25rem 0.5rem;
     font-weight: 600;
     border-radius: 0 1rem 1rem 0;
@@ -464,4 +468,39 @@ input {
 #bubble2 {
     width: 12rem;
     background-color: rgba(38, 39, 43, 0.514);
+}
+/* vision trigger */
+.unity-vision-overlay {
+    background-color: rgba(0, 0, 0, 0.463);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+.unity-vision-overlay .vision-card {
+    background-color: #dfeeffce;
+    border-radius: 1rem;
+    padding: 1rem;
+    height: 20rem;
+    position: relative;
+}
+.unity-vision-overlay .vision-square {
+    height: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.unity-vision-overlay #visionVideo {
+    height: 100%;
+}
+#visionTimerOverlay {
+    background-color: rgba(0, 0, 0, 0.582);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    font-weight: 600;
 }

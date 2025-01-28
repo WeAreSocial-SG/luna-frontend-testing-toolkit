@@ -2,7 +2,18 @@
 const COLORS = {
     positiveGreen: "#99ffc7",
     errorRed: "#ff958a",
+    modeBlue: "#bddcff",
+    defaultGrey: "#d1d1d1",
+    conversationGreen: "#affac2",
 };
+const eventColors = {
+    playDialogue: COLORS.conversationGreen,
+    updateTranscription: COLORS.conversationGreen,
+    updateLunaMode: COLORS.modeBlue,
+    updateLunaState: COLORS.modeBlue,
+    playRecordedAudio: COLORS.conversationGreen,
+};
+const maxEventBacklog = 20;
 
 // setup the qr code scanner
 const resultContainer = document.getElementById("qr-reader-results");
@@ -64,11 +75,16 @@ function renderStatus() {
 function renderEventHistory() {
     const elEventLogs = document.getElementById("events");
     elEventLogs.innerHTML = "";
-    [...States.eventLogs].reverse().forEach((event) => {
+    for (let index = 0; index < maxEventBacklog; index++) {
+        const event = States.eventLogs[index];
         // filter the events
         const eventFilters = document
             .getElementById("eventFilter")
             .value.split(",");
+        // check if colors should be highlighted
+        const color = Object.keys(eventColors).includes(event.event)
+            ? eventColors[event.event]
+            : COLORS.defaultGrey;
         if (eventFilters.includes(event.event)) {
             // check if string or json
             const payloadIsString =
@@ -80,18 +96,18 @@ function renderEventHistory() {
             // render the evetns
             elEventLogs.innerHTML += `
         <div class="event-log">
-            <div class="name-label">
+            <div class="name-label" style="background-color:${color}">
                 <div class="event-key">Event: </div>
                 ${event.event}
             </div>
-            <div class="payload-label">
+            <div class="payload-label" style="background-color:${color}">
                 <div class="event-key">Payload: </div>
                 ${payload}
             </div>
         </div> 
-    `;
+        `;
         }
-    });
+    }
 }
 
 // event callbacks
@@ -123,7 +139,7 @@ function onConnectButtonClicked() {
 }
 function onEventReceived(data) {
     const dataParsed = JSON.parse(data);
-    States.eventLogs.push(dataParsed);
+    States.eventLogs.unshift(dataParsed);
     MockUnity.instance.handleEvents(dataParsed);
 }
 // proximity slider stuff
@@ -154,15 +170,15 @@ function onSendEventButtonClicked() {
 // event log filters
 const filterPresets = {
     All: "playDialogue,lunaFinishedSpeaking,lunaResponded,updateLunaState,triggerVision,qrCodeScanned,showProduct,triggerTelegram,restart,updateTranscription,playRecordedAudio,timer,showNotificationAlert,showTooltip,updateLunaMode,updateCurrentSessionId,userReturnedFromPause,register,syncEnvironment",
-    Conversation: "playDialogue,updateTranscription",
+    Conversation: "playDialogue,updateTranscription,playRecordedAudio",
+    UI: "showTooltip,showPlayDialogue",
 };
-const allFilterButtons = document.getElementsByClassName("event-filters");
+const allFilterButtons = document.querySelectorAll(".event-filters");
 for (let index = 0; index < allFilterButtons.length; index++) {
     const element = allFilterButtons[index];
     element.addEventListener("click", () => {
-        console.log(element);
         document.getElementById("eventFilter").value =
-            filterPresets[element.innerHTML];
+            filterPresets[element.innerHTML.trim()];
     });
 }
 

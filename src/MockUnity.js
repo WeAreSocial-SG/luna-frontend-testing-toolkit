@@ -48,6 +48,16 @@ const htmlElements = `
         </div>
     </div>
 
+    <!-- vision trigger -->
+    <div class="overlay unity-vision-overlay">
+        <div class="vision-card">
+            <div class="vision-square">
+                <video autoplay id="visionVideo"/>
+            </div>
+            <div id="visionTimerOverlay" class="overlay">3</div>
+        </div>
+    </div>
+
     <!-- paused overlay -->
     <div class="overlay unity-paused-overlay">
         <div class="unity-paused-card">
@@ -56,7 +66,7 @@ const htmlElements = `
             <p>Inactive User:</p>
             <div class="user-label">USER#1204</div>
             <p>Step into the detection area to resume or start a new session</p>
-            <h2 id="pausedTimerTael">30s</h2>
+            <h2 id="pausedTimerLabel">30s</h2>
             <p>Until session restarts</p>
         </div>
     </div>
@@ -67,8 +77,10 @@ class MockUnity {
     static instance = null;
     // states
     states = {
-        conversationHistory: ["", ""]
-    }
+        conversationHistory: ["", ""],
+        pausedTimer: 0,
+        visionTimer: 0,
+    };
     constructor(parentElement, socket) {
         // handle singleton
         if (MockUnity.instance) {
@@ -96,11 +108,23 @@ class MockUnity {
                 "notificationContainer"
             ),
             pausedOvelay: document.querySelector(".unity-paused-overlay"),
+            pausedTimerLabel: document.getElementById("pausedTimerLabel"),
             bubble1: document.getElementById("bubble1"),
-            bubble2: document.getElementById("bubble2")
+            bubble2: document.getElementById("bubble2"),
+            visionOverlay: document.querySelector(".unity-vision-overlay"),
+            visionTimerLabel: document.querySelector("#visionTimerOverlay"),
         };
+        // setup the camera
+        (async () => {
+            console.log("camera");
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+            });
+            const videoElement = document.getElementById("visionVideo");
+            videoElement.srcObject = stream;
+        })();
         // timer ticker
-        setInterval(this.timerTick.bind(this), 1000)
+        setInterval(this.timerTick.bind(this), 1000);
     }
     handleEvents(event) {
         console.log("mock unity received event:", event);
@@ -158,35 +182,52 @@ class MockUnity {
                     document.querySelector(
                         ".unity-paused-card .user-label"
                     ).innerHTML = "#" + this.elements.sessionLabel.innerHTML;
+                    // u[date timer]
+                    this.states.pausedTimer = 30;
                 } else {
                     this.elements.pausedOvelay.style = "opacity:0";
                 }
                 break;
             case "lunaResponded":
                 // update variable
-                if(this.states.conversationHistory[0] === ""){ // empty array
-                    this.states.conversationHistory[0] = event.payload
-                }else{ // push back element zero and insert new event
-                    this.states.conversationHistory[1] = this.states.conversationHistory[0]
-                    this.states.conversationHistory[0] = event.payload
+                if (this.states.conversationHistory[0] === "") {
+                    // empty array
+                    this.states.conversationHistory[0] = event.payload;
+                } else {
+                    // push back element zero and insert new event
+                    this.states.conversationHistory[1] =
+                        this.states.conversationHistory[0];
+                    this.states.conversationHistory[0] = event.payload;
                 }
                 // render elements
-                if(this.states.conversationHistory[0] !== ""){
-                    this.elements.bubble1.innerHTML = this.states.conversationHistory[0]
+                if (this.states.conversationHistory[0] !== "") {
+                    this.elements.bubble1.innerHTML =
+                        this.states.conversationHistory[0];
                 }
-                if(this.states.conversationHistory[1] !== ""){
-                    this.elements.bubble2.innerHTML = this.states.conversationHistory[1]
-                    this.elements.bubble2.style = ""
-                }else{
-                    this.elements.bubble2.style = "opacity: 0"
+                if (this.states.conversationHistory[1] !== "") {
+                    this.elements.bubble2.innerHTML =
+                        this.states.conversationHistory[1];
+                    this.elements.bubble2.style = "";
+                } else {
+                    this.elements.bubble2.style = "opacity: 0";
                 }
                 break;
             case "updateLunaState":
-                if(event.payload === "thinking"){
-                    this.elements.bubble1.innerHTML = "• • •"
-                }else{
-                    this.elements.bubble1.innerHTML = this.states.conversationHistory[0]
+                if (event.payload === "thinking") {
+                    this.elements.bubble1.innerHTML = "• • •";
+                } else {
+                    this.elements.bubble1.innerHTML =
+                        this.states.conversationHistory[0];
                 }
+                break;
+            case "triggerVision":
+                // update timer
+                this.states.visionTimer = "3";
+                // bring up the vision timer
+                this.elements.visionOverlay.style = "opacity: 1"; // if vision timer is down
+                // update timer
+                this.elements.visionTimerLabel.innerHTML =
+                    this.states.visionTimer + 1;
                 break;
             default:
                 console.log(
@@ -195,7 +236,21 @@ class MockUnity {
                 break;
         }
     }
-    timerTick(){
-
+    timerTick() {
+        // iterate over all timers in state
+        this.states.pausedTimer -= 1;
+        this.states.visionTimer -= 1;
+        // clamp the values
+        if (this.states.pausedTimer < 0) {
+            this.states.pausedTimer = 0;
+        }
+        if (this.states.visionTimer < 0) {
+            this.elements.visionOverlay.style = "opacity: 0"; // if vision timer is down
+            this.states.visionTimer = 0;
+        }
+        // update the timer ui
+        this.elements.pausedTimerLabel.innerHTML =
+            this.states.pausedTimer + "s";
+        this.elements.visionTimerLabel.innerHTML = this.states.visionTimer + 1;
     }
 }
