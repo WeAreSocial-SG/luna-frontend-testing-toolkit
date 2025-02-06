@@ -115,14 +115,14 @@ class MockUnity {
             visionTimerLabel: document.querySelector("#visionTimerOverlay"),
         };
         // setup the camera
-        (async () => {
-            console.log("camera");
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-            });
-            const videoElement = document.getElementById("visionVideo");
-            videoElement.srcObject = stream;
-        })();
+        // (async () => {
+        //     console.log("camera");
+        //     const stream = await navigator.mediaDevices.getUserMedia({
+        //         video: true,
+        //     });
+        //     const videoElement = document.getElementById("visionVideo");
+        //     videoElement.srcObject = stream;
+        // })();
         // timer ticker
         setInterval(this.timerTick.bind(this), 1000);
     }
