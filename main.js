@@ -130,10 +130,12 @@ function onConnectButtonClicked() {
         ).style = `background-color: ${COLORS.errorRed}`;
     };
     // start the websocket
+    const webSocketName = document.getElementById("websocketSelect").value;
+    console.log(webSocketName);
     const url = `ws://${
         document.getElementById("baseUrlInput").value
     }/websocket`;
-    sockets = new Sockets(url, "engine");
+    sockets = new Sockets(url, webSocketName);
     // add maessage callback
     sockets.onMessageCallback = onEventReceived;
 }

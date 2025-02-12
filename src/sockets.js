@@ -10,6 +10,7 @@ class Sockets {
         console.log("web socket is closed");
     };
     constructor(wssUrl, connectionName) {
+        console.log(`creating connection named ${connectionName}`);
         // initialise connection
         this.socketConnection = new WebSocket(wssUrl);
         this.disconnectionTime = 2.0;
